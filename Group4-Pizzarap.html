@@ -1,0 +1,936 @@
+<html style="margin:0;padding:0;">
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script>
+(function(){
+  var s = document.createElement('style');
+  s.textContent = ':root{--bg:#faf9f4;--card:#ffffff;--text:#0f172a;--muted:#64748b;--accent:#297a2e;--accent-soft:rgba(41,122,46,.14);--accent2:#d97706;--accent2-soft:rgba(217,119,6,.14);--border:rgba(15,23,42,.08)}body.dark{--bg:#1a1f1a;--card:#232a24;--text:#e8f0e8;--muted:#8b9a8b;--accent-soft:rgba(120,200,120,.18);--border:rgba(255,255,255,.08)}.reveal{opacity:0;transform:translateY(20px);animation:fadeUp .6s ease forwards}.reveal:nth-child(2){animation-delay:.1s}.reveal:nth-child(3){animation-delay:.2s}.reveal:nth-child(4){animation-delay:.3s}.reveal:nth-child(5){animation-delay:.4s}@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.metric-card{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;cursor:default}.metric-card:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 14px 40px rgba(41,122,46,.15);border-color:var(--accent)}.tab-btn{transition:all .25s ease;cursor:pointer;border-bottom:2px solid transparent;position:relative}.tab-btn:hover{color:var(--accent);background:var(--accent-soft)}.tab-btn.active{color:var(--text);background:var(--accent-soft);border-bottom:2px solid var(--accent);font-weight:600}.tab-content{display:none}.tab-content.active{display:block;animation:fadeIn .45s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.tbl-row{transition:background .15s ease,transform .15s ease}.tbl-row:hover{background:rgba(41,122,46,.06);transform:scale(1.005)}.accordion-content{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}.accordion-content.open{max-height:800px}.accordion-header{cursor:pointer;transition:all .2s ease;border:1px solid var(--border)}.accordion-header:hover{background:var(--accent-soft);border-color:var(--accent)}.accordion-header.open{background:var(--accent-soft);border-color:var(--accent)}.chip{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;transition:all .2s ease;cursor:default}.chip:hover{transform:scale(1.08)}.chip-green{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent)}.chip-orange{background:var(--accent2-soft);color:var(--accent2);border:1px solid var(--accent2)}.role-card{transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer;border:1px solid var(--border)}.role-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 40px rgba(41,122,46,.18);border-color:var(--accent);z-index:10}.proponent-card{transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer;border:1px solid var(--border);position:relative;overflow:hidden}.proponent-card::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(41,122,46,.08),transparent);transition:left .5s ease}.proponent-card:hover::before{left:100%}.proponent-card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 10px 30px rgba(41,122,46,.15)}.flavor-card{transition:all .35s cubic-bezier(.4,0,.2,1);cursor:pointer;border:1px solid var(--border)}.flavor-card:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 20px 50px rgba(41,122,46,.2);border-color:var(--accent)}.flavor-card.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),0 10px 30px rgba(41,122,46,.15)}.process-step{transition:all .3s ease;cursor:pointer}.process-step:hover{transform:scale(1.08);z-index:10}.process-step.active .step-num{background:var(--accent);transform:scale(1.2)}.process-step.active .step-label{color:var(--accent);font-weight:700}.back-to-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(41,122,46,.4);opacity:0;transform:translateY(20px);transition:all .3s ease;z-index:1000;border:none}.back-to-top.visible{opacity:1;transform:translateY(0)}.back-to-top:hover{transform:translateY(-3px) scale(1.1);box-shadow:0 6px 25px rgba(41,122,46,.5)}.search-box{width:100%;padding:10px 16px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;outline:none;transition:all .2s ease;font-family:inherit}.search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}.progress-bar{height:8px;border-radius:4px;background:rgba(128,128,128,.1);overflow:hidden}.progress-fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:all .3s ease}.modal-overlay.open{opacity:1;visibility:visible}.modal-box{background:var(--card);border-radius:16px;padding:28px;max-width:500px;width:90%;transform:scale(.9);transition:transform .3s ease;box-shadow:0 25px 80px rgba(0,0,0,.3)}.modal-overlay.open .modal-box{transform:scale(1)}.theme-toggle{width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s ease}.theme-toggle:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}.logo-pulse{animation:pulse 2.5s ease-in-out infinite}@keyframes pulse{0%,100%{filter:drop-shadow(0 0 4px rgba(41,122,46,.3))}50%{filter:drop-shadow(0 0 14px rgba(41,122,46,.6))}}.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .25s ease}.nav-dot:hover{background:var(--accent-soft);transform:scale(1.3)}.nav-dot.active{background:var(--accent);transform:scale(1.4);box-shadow:0 0 0 4px var(--accent-soft)}.tooltip{position:relative}.tooltip::after{content:attr(data-tip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%) translateY(-4px);background:var(--text);color:var(--bg);padding:6px 12px;border-radius:8px;font-size:12px;white-space:nowrap;opacity:0;visibility:hidden;transition:all .2s ease;pointer-events:none;z-index:100}.tooltip:hover::after{opacity:1;visibility:visible;transform:translateX(-50%) translateY(-8px)}.calc-input{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;width:100%;outline:none;transition:all .2s ease;font-family:inherit}.calc-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}.section-nav{position:sticky;top:0;z-index:100;background:var(--bg);backdrop-filter:blur(10px);padding:10px 0;border-bottom:1px solid var(--border)}.proponents-wrapper{transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin .4s ease;overflow:hidden}.proponents-wrapper.collapsed{max-height:0 !important;opacity:0;margin-bottom:0 !important}.collapse-btn{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;transition:all .2s ease}.collapse-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.collapse-btn .chev{transition:transform .3s ease}.collapse-btn.open .chev{transform:rotate(180deg)}';
+  document.head.appendChild(s);
+})();
+</script>
+<div style="background-color:transparent;box-sizing:border-box;">
+  <div id="mainContainer" style="color:var(--text);font-family:'Fredoka',sans-serif;background:var(--bg);min-height:100%;transition:background .3s ease,color .3s ease;">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+
+      <!-- TOP NAVIGATION BAR -->
+      <div class="section-nav reveal mb-8" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <!-- PIZZARAP LOGO -->
+          <div class="logo-pulse" style="flex-shrink:0;">
+            <svg width="52" height="52" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#297a2e"/>
+                  <stop offset="100%" style="stop-color:#d97706"/>
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="46" fill="url(#logoGrad)" opacity="0.12"/>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="url(#logoGrad)" stroke-width="3"/>
+              <path d="M30 42 Q50 28 70 42 L66 62 Q50 74 34 62 Z" fill="url(#logoGrad)" opacity="0.9"/>
+              <ellipse cx="42" cy="50" rx="4" ry="3" fill="#fff" opacity="0.8"/>
+              <ellipse cx="52" cy="46" rx="3" ry="2.5" fill="#fff" opacity="0.7"/>
+              <ellipse cx="60" cy="52" rx="3.5" ry="2.5" fill="#fff" opacity="0.75"/>
+              <path d="M38 60 Q50 66 62 60" stroke="#fff" stroke-width="2" fill="none" opacity="0.6"/>
+              <text x="50" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="url(#logoGrad)" font-family="Fredoka, sans-serif">PIZZARAP</text>
+            </svg>
+          </div>
+          <div>
+            <h1 style="font-size:22px;font-weight:700;margin:0;line-height:1.1;background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;">PIZZARAP! Franchising Corp</h1>
+            <p style="font-size:12px;color:var(--muted);margin:2px 0 0;">Business Proposal · Entrepreneurial Management</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="theme-toggle tooltip" data-tip="Toggle Theme" onclick="toggleTheme()" title="Toggle Theme">
+            <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- HERO SECTION -->
+      <div class="reveal mb-10">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 6px 20px rgba(41,122,46,.3);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <div style="flex:1;min-width:250px;">
+            <p style="font-family:monospace;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0;">Final Requirement · Entrepreneurial Management</p>
+            <h2 style="font-size:clamp(28px,4vw,44px);font-weight:700;margin:4px 0 0;letter-spacing:-0.02em;line-height:1.15;">
+              Healthy. Affordable. <span style="background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">Sarap!</span>
+            </h2>
+          </div>
+        </div>
+        <p style="color:var(--muted);max-width:700px;line-height:1.75;font-size:16px;margin:0;">
+          A unique Filipino twist on pizza rolls — offering Creamy Moringa, Cheesy Tuna, and Chicken Pastil flavors. Strategically located at Bulacan Provincial Capitol View Park, Malolos City, serving students, professionals, and health-conscious families.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;">
+          <span class="chip chip-green">La Consolacion University Philippines</span>
+          <span class="chip chip-orange">College of Business, Entrepreneurship & Accountancy</span>
+          <span class="chip chip-green">May 2025</span>
+          <span class="chip chip-orange">Malolos City, Bulacan</span>
+        </div>
+      </div>
+
+      <!-- KEY METRICS with Animated Counters -->
+      <div class="reveal flex flex-wrap gap-4 mb-10" id="metricsContainer">
+        <div class="metric-card rounded-2xl p-6" style="flex:1 1 200px;min-width:180px;background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:3px solid var(--accent);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div style="color:var(--muted)" class="text-xs uppercase tracking-wide font-medium">Daily Sales</div>
+          </div>
+          <div style="color:var(--text)" class="text-3xl font-bold counter" data-target="5059.60" data-prefix="₱" data-decimals="2">₱0</div>
+          <div class="text-xs mt-1" style="color:var(--accent);font-weight:600;">60 rolls sold daily</div>
+        </div>
+        <div class="metric-card rounded-2xl p-6" style="flex:1 1 200px;min-width:180px;background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:3px solid var(--accent2);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div style="color:var(--muted)" class="text-xs uppercase tracking-wide font-medium">Monthly Revenue</div>
+          </div>
+          <div style="color:var(--text)" class="text-3xl font-bold counter" data-target="53207" data-prefix="₱" data-decimals="0">₱0</div>
+          <div class="text-xs mt-1" style="color:var(--accent2);font-weight:600;">Net of expenses</div>
+        </div>
+        <div class="metric-card rounded-2xl p-6" style="flex:1 1 200px;min-width:180px;background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:3px solid var(--accent);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            </div>
+            <div style="color:var(--muted)" class="text-xs uppercase tracking-wide font-medium">Start-Up Cost</div>
+          </div>
+          <div style="color:var(--text)" class="text-3xl font-bold counter" data-target="54950" data-prefix="₱" data-decimals="0">₱0</div>
+          <div class="text-xs mt-1" style="color:var(--muted);font-weight:500;">Initial investment</div>
+        </div>
+        <div class="metric-card rounded-2xl p-6" style="flex:1 1 200px;min-width:180px;background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:3px solid var(--accent2);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+            </div>
+            <div style="color:var(--muted)" class="text-xs uppercase tracking-wide font-medium">5-Year Revenue</div>
+          </div>
+          <div style="color:var(--text)" class="text-3xl font-bold counter" data-target="274020" data-prefix="₱" data-decimals="0">₱0</div>
+          <div class="text-xs mt-1" style="color:var(--accent2);font-weight:600;">Projected net</div>
+        </div>
+      </div>
+
+      <!-- PROPONENTS SECTION - COLLAPSIBLE -->
+      <div class="reveal mb-10">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h2 class="text-xl font-semibold" style="color:var(--text);margin:0;">Proponents & Makers of this Paper</h2>
+            <span class="chip chip-green" style="margin-left:4px;">9 Members</span>
+          </div>
+          <button class="collapse-btn open" id="collapseBtn" onclick="toggleProponents()">
+            <span>Show/Hide Members</span>
+            <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="proponents-wrapper" id="proponentsWrapper" style="max-height:2000px;">
+          <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:4px solid var(--accent);">
+            <p style="color:var(--muted);font-size:14px;margin:0 0 18px;">Click any name to view their role in the management team</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4" id="proponentsGrid">
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent-soft),transparent);" onclick="showMemberModal('Justin Francisco','Chief Executive Officer','Leads the business, makes key strategic decisions, oversees all departments, and establishes long-term goals.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(41,122,46,.25);">JF</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Justin Francisco</p>
+                <p style="font-size:11px;color:var(--accent);font-weight:600;margin-top:4px;">CEO</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent2-soft),transparent);" onclick="showMemberModal('Marianne Zulueta','Assistant to the CEO','Provides direct support to the CEO, handles administrative tasks, coordinates meetings, and ensures smooth communication between departments.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(217,119,6,.25);">MZ</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Marianne Zulueta</p>
+                <p style="font-size:11px;color:var(--accent2);font-weight:600;margin-top:4px;">Asst. to CEO</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent-soft),transparent);" onclick="showMemberModal('Givenchy Robles','Operations Manager','Oversees daily business processes, food production, staff coordination, quality control, and workflow optimization.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(41,122,46,.25);">GR</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Givenchy Robles</p>
+                <p style="font-size:11px;color:var(--accent);font-weight:600;margin-top:4px;">Operations</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent2-soft),transparent);" onclick="showMemberModal('Julius Santos','Head Chef & Product Development','Leads the kitchen team, ensures food quality standards, develops new flavors, and sources fresh local ingredients.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(217,119,6,.25);">JS</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Julius Santos</p>
+                <p style="font-size:11px;color:var(--accent2);font-weight:600;margin-top:4px;">Head Chef</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent-soft),transparent);" onclick="showMemberModal('Adrian Dela Cruz','Marketing & Sales Manager','Handles advertising, branding, social media, and develops strategies to increase customer engagement and sales.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(41,122,46,.25);">ADC</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Adrian Dela Cruz</p>
+                <p style="font-size:11px;color:var(--accent);font-weight:600;margin-top:4px;">Marketing</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent2-soft),transparent);" onclick="showMemberModal('Alyssa Rosete','Finance Manager','Manages finances, budgeting, financial planning, tracks expenses, monitors sales, and ensures profitability.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(217,119,6,.25);">AR</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Alyssa Rosete</p>
+                <p style="font-size:11px;color:var(--accent2);font-weight:600;margin-top:4px;">Finance</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent-soft),transparent);" onclick="showMemberModal('Denise Sanchez','HR & Customer Relations','Manages recruitment, training, employee welfare, and oversees customer service, inquiries, and feedback.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(41,122,46,.25);">DS</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Denise Sanchez</p>
+                <p style="font-size:11px;color:var(--accent);font-weight:600;margin-top:4px;">HR & Customers</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent2-soft),transparent);" onclick="showMemberModal('Nhil Jhanzen Parole','Logistics & Procurement Officer','Oversees the supply chain, ensures timely delivery of ingredients, coordinates with suppliers, and manages inventory.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(217,119,6,.25);">NJP</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Nhil Jhanzen Parole</p>
+                <p style="font-size:11px;color:var(--accent2);font-weight:600;margin-top:4px;">Logistics</p>
+              </div>
+              <div class="proponent-card p-5 rounded-xl text-center" style="background:linear-gradient(135deg,var(--accent-soft),transparent);" onclick="showMemberModal('Miguela Arpista','Store Supervisor','Manages store operations, staff, monitors sales, ensures excellent customer service and food safety protocols.')">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 10px;box-shadow:0 3px 12px rgba(41,122,46,.25);">MA</div>
+                <p class="font-semibold text-base" style="color:var(--text);margin:0;">Miguela Arpista</p>
+                <p style="font-size:11px;color:var(--accent);font-weight:600;margin-top:4px;">Store Supervisor</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS NAVIGATION -->
+      <div class="reveal mb-6" style="border-bottom:1px solid var(--border);overflow-x:auto;">
+        <div style="display:flex;gap:2px;min-width:max-content;" id="tabNav">
+          <button class="tab-btn active px-5 py-3 text-sm font-medium rounded-t-lg" style="color:var(--muted);" onclick="switchTab(event,'overview')">Overview</button>
+          <button class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg" style="color:var(--muted);" onclick="switchTab(event,'marketing')">Marketing</button>
+          <button class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg" style="color:var(--muted);" onclick="switchTab(event,'production')">Production</button>
+          <button class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg" style="color:var(--muted);" onclick="switchTab(event,'financial')">Financial</button>
+          <button class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg" style="color:var(--muted);" onclick="switchTab(event,'socioeconomic')">Socio-Economic</button>
+          <button class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg" style="color:var(--muted);" onclick="switchTab(event,'calculator')">Calculator</button>
+        </div>
+      </div>
+
+      <!-- TAB: OVERVIEW -->
+      <div id="overview" class="tab-content active">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              </div>
+              <h2 class="text-xl font-semibold" style="color:var(--text);margin:0;">Introduction</h2>
+            </div>
+            <p style="color:var(--text);line-height:1.75;font-size:15px;margin:0;">
+              In the Philippines, there is a growing need for healthy and reasonably priced food options, particularly among consumers who are health conscious. Pizzarap! offers a unique twist on the traditional pizza roll by adding tasty and nutritious alternatives. Our product line includes <strong>Creamy Moringa</strong>, <strong>Cheesy Tuna</strong>, and <strong>Chicken Pastil</strong> — offering a healthier yet delectable take on typical pizza rolls.
+            </p>
+          </div>
+          <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <div style="width:36px;height:36px;border-radius:10px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <h2 class="text-xl font-semibold" style="color:var(--text);margin:0;">Project Summary</h2>
+            </div>
+            <p style="color:var(--text);line-height:1.75;font-size:15px;margin:0 0 14px;">
+              <strong>"Pizzarap! Franchising Corp"</strong> comes from <em>Pizza</em> + <em>Sarap</em> (Filipino for "delicious"). Objective: create and market creative pizza rolls that provide affordable and healthy alternatives.
+            </p>
+            <div style="padding:14px 16px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);">
+              <p style="color:var(--text);font-size:14px;line-height:1.6;margin:0;"><strong>Location:</strong> Bulacan Provincial Capitol View Park, Malolos City — near busy streets, business districts, schools, and families.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Flavors with Interactive Selection -->
+        <div class="rounded-2xl p-7 mb-8" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/></svg>
+              </div>
+              <h2 class="text-xl font-semibold" style="color:var(--text);margin:0;">Product Flavors</h2>
+            </div>
+            <p style="font-size:12px;color:var(--muted);margin:0;">Click a flavor to see details</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+            <div class="flavor-card p-5 rounded-xl active" id="flavor1" onclick="selectFlavor(1)" style="background:linear-gradient(135deg,rgba(41,122,46,.08),rgba(41,122,46,.02));">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <h3 class="font-semibold text-lg" style="color:var(--accent);margin:0;">Creamy Moringa</h3>
+                <span class="chip chip-green">₱89.88</span>
+              </div>
+              <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Nestlé Cream, Andrew's Sweet Ham, OK Cheese, and malunggay — rich in vitamins and minerals.</p>
+            </div>
+            <div class="flavor-card p-5 rounded-xl" id="flavor2" onclick="selectFlavor(2)" style="background:linear-gradient(135deg,rgba(217,119,6,.08),rgba(217,119,6,.02));">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <h3 class="font-semibold text-lg" style="color:var(--accent2);margin:0;">Cheesy Tuna</h3>
+                <span class="chip chip-orange">₱77.98</span>
+              </div>
+              <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Canned tuna, tomato sauce, onion, and cheese — protein-rich and flavorful.</p>
+            </div>
+            <div class="flavor-card p-5 rounded-xl" id="flavor3" onclick="selectFlavor(3)" style="background:linear-gradient(135deg,rgba(41,122,46,.06),rgba(217,119,6,.05));">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <h3 class="font-semibold text-lg" style="color:var(--accent);margin:0;">Chicken Pastil</h3>
+                <span class="chip chip-green">₱85.12</span>
+              </div>
+              <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Shredded chicken in oyster sauce with Knorr seasoning — authentic Filipino flavor.</p>
+            </div>
+          </div>
+          <div id="flavorDetails" style="padding:20px;border-radius:12px;background:var(--accent-soft);border:1px dashed var(--accent);">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;">
+              <div><p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px;">Production Cost</p><p style="font-size:22px;font-weight:700;color:var(--text);margin:0;" id="fdCost">₱64.20</p></div>
+              <div><p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px;">Selling Price</p><p style="font-size:22px;font-weight:700;color:var(--accent);margin:0;" id="fdPrice">₱89.88</p></div>
+              <div><p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px;">Profit per Unit</p><p style="font-size:22px;font-weight:700;color:var(--accent2);margin:0;" id="fdProfit">₱25.68</p></div>
+              <div><p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px;">Markup</p><p style="font-size:22px;font-weight:700;color:var(--text);margin:0;">40%</p></div>
+            </div>
+            <div style="margin-top:16px;">
+              <p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 6px;">Cost Breakdown</p>
+              <div class="progress-bar"><div class="progress-fill" id="fdProgress" style="width:71%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div>
+              <p style="font-size:12px;color:var(--muted);margin-top:6px;" id="fdIngredients">Cream, Ham, Bread, Egg, Breadcrumbs, Malunggay, Garlic Dip</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sales Chart -->
+        <div class="rounded-2xl p-7 mb-8" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <h2 class="text-xl font-semibold mb-2" style="color:var(--text);margin:0;">Daily Sales Breakdown by Product</h2>
+          <p style="color:var(--muted);font-size:14px;margin:0 0 16px;">Based on 20 units sold per flavor daily</p>
+          <div id="salesChart" style="height:340px;width:100%"></div>
+          <script>
+          (function init(n){
+            try {
+              var el=document.getElementById('salesChart'); if(!el)return;
+              if(typeof echarts==='undefined'){if(n<40){setTimeout(function(){init(n+1)},250);return;}el.textContent='Chart library failed to load';return;}
+              var c = echarts.init(el);
+              var st=getComputedStyle(document.documentElement);
+              var accent=st.getPropertyValue('--accent').trim()||'#297a2e';
+              var accent2=st.getPropertyValue('--accent2').trim()||'#d97706';
+              var muted=st.getPropertyValue('--muted').trim()||'#64748b';
+              var card=st.getPropertyValue('--card').trim()||'#ffffff';
+              var text=st.getPropertyValue('--text').trim()||'#0f172a';
+              var border=st.getPropertyValue('--border').trim()||'rgba(15,23,42,.08)';
+              c.setOption({
+                backgroundColor:'transparent',
+                tooltip:{trigger:'axis',backgroundColor:card,borderColor:border,textStyle:{color:text},formatter:function(p){return p[0].name+'<br/><strong>₱'+p[0].value.toLocaleString()+'</strong>';}},
+                grid:{left:'3%',right:'4%',bottom:'3%',containLabel:true},
+                xAxis:{type:'category',data:['Creamy Moringa','Cheesy Tuna','Chicken Pastil'],axisLabel:{color:muted,fontSize:12},axisTick:{show:false},axisLine:{lineStyle:{color:border}}},
+                yAxis:{type:'value',axisLabel:{color:muted,formatter:'₱{value}'},splitLine:{lineStyle:{color:border}}},
+                series:[{
+                  type:'bar',
+                  data:[
+                    {value:1797.6,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:accent},{offset:1,color:accent+'80'}]},borderRadius:[8,8,0,0]}},
+                    {value:1559.6,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:accent2},{offset:1,color:accent2+'80'}]},borderRadius:[8,8,0,0]}},
+                    {value:1702.4,itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:accent},{offset:1,color:accent2+'99'}]},borderRadius:[8,8,0,0]}}
+                  ],
+                  barWidth:'45%',
+                  label:{show:true,position:'top',formatter:'₱{c}',color:text,fontWeight:600,fontSize:12},
+                  emphasis:{itemStyle:{shadowBlur:20,shadowColor:accent+'66'}}
+                }]
+              });
+              window.addEventListener('resize',function(){c.resize()});
+            } catch(e){console.error(e)}
+          })(0);
+          </script>
+        </div>
+      </div>
+
+      <!-- TAB: MARKETING -->
+      <div id="marketing" class="tab-content">
+        <div class="rounded-2xl p-7 mb-6" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <h2 class="text-xl font-semibold" style="color:var(--text);margin:0;">Target Market Segments</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="accordion-header p-4 rounded-xl" onclick="toggleAccordion(this)">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="width:32px;height:32px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">A</span>
+                  <div><h3 class="font-semibold" style="color:var(--text);margin:0;">Kids (6-12 years old)</h3><p style="font-size:12px;color:var(--muted);margin:2px 0 0;">Fun, healthy snack option</p></div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);transition:transform .3s;" class="accordion-icon"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="accordion-content"><p style="color:var(--text);font-size:14px;line-height:1.7;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--border);">Children are drawn to snacks that are flavorful, visually appealing, and easy to eat. Parents prioritize nutritious and safe options. Our <strong>Creamy Moringa</strong> pizza roll, enriched with malunggay, provides a fun and delicious alternative to unhealthy junk food.</p></div>
+            </div>
+            <div class="accordion-header p-4 rounded-xl" onclick="toggleAccordion(this)">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="width:32px;height:32px;border-radius:8px;background:var(--accent2-soft);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">B</span>
+                  <div><h3 class="font-semibold" style="color:var(--text);margin:0;">Teens & Adults (13-30)</h3><p style="font-size:12px;color:var(--muted);margin:2px 0 0;">Trendy, filling, budget-friendly</p></div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);transition:transform .3s;" class="accordion-icon"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="accordion-content"><p style="color:var(--text);font-size:14px;line-height:1.7;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--border);">Students juggle academics, activities, and social lives — they need convenient, grab-and-go food. Our <strong>Cheesy Tuna</strong> and <strong>Chicken Pastil</strong> flavors offer the perfect balance of affordability, portability, and indulgence for fast-paced lifestyles.</p></div>
+            </div>
+            <div class="accordion-header p-4 rounded-xl" onclick="toggleAccordion(this)">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="width:32px;height:32px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">C</span>
+                  <div><h3 class="font-semibold" style="color:var(--text);margin:0;">Teachers & School Staff</h3><p style="font-size:12px;color:var(--muted);margin:2px 0 0;">Quick, nutritious, non-heavy meals</p></div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);transition:transform .3s;" class="accordion-icon"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="accordion-content"><p style="color:var(--text);font-size:14px;line-height:1.7;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--border);">Educators have demanding schedules with limited time for sit-down meals. They need something substantial but not too heavy to stay energized. Our pizza rolls provide an ideal balance of protein, carbohydrates, and essential nutrients.</p></div>
+            </div>
+            <div class="accordion-header p-4 rounded-xl" onclick="toggleAccordion(this)">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="width:32px;height:32px;border-radius:8px;background:var(--accent2-soft);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">D</span>
+                  <div><h3 class="font-semibold" style="color:var(--text);margin:0;">Employees & Office Workers</h3><p style="font-size:12px;color:var(--muted);margin:2px 0 0;">Mess-free, satisfying snacks</p></div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);transition:transform .3s;" class="accordion-icon"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="accordion-content"><p style="color:var(--text);font-size:14px;line-height:1.7;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--border);">Office professionals need food that's delicious but convenient to consume without creating a mess. Our pizza rolls are compact, satisfying, and won't disrupt workflow — perfect for short breaks or eating at desks.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Marketing Strategies Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+          <div class="rounded-2xl p-6 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <h3 class="font-semibold text-lg" style="color:var(--text);margin:0 0 6px;">Geographic Segmentation</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Located at Bulacan Provincial Capitol View Park. High foot traffic near schools, offices, and public markets. Online ordering expands reach.</p>
+          </div>
+          <div class="rounded-2xl p-6 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);margin-bottom:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <h3 class="font-semibold text-lg" style="color:var(--text);margin:0 0 6px;">Psychographic Strategy</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Appeals to those who value health, convenience, and affordability. Health-conscious eaters, food enthusiasts, parents, and socially responsible consumers.</p>
+          </div>
+          <div class="rounded-2xl p-6 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h3 class="font-semibold text-lg" style="color:var(--text);margin:0 0 6px;">Pricing Strategy</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Cost-plus pricing with 40% markup on production cost. Ensures profitability while maintaining competitive and reasonable prices.</p>
+          </div>
+          <div class="rounded-2xl p-6 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);margin-bottom:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <h3 class="font-semibold text-lg" style="color:var(--text);margin:0 0 6px;">Channel of Distribution</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Direct-to-customer through physical store, online sales via social media, and delivery service for convenience and wider reach.</p>
+          </div>
+          <div class="rounded-2xl p-6 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </div>
+            <h3 class="font-semibold text-lg" style="color:var(--text);margin:0 0 6px;">Promotion & Advertising</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Facebook, TikTok, Instagram campaigns. Free samples in schools. Colorful posters. Fun packaging. Special promos and offers.</p>
+          </div>
+          <div class="rounded-2xl p-6 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);margin-bottom:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3 class="font-semibold text-lg" style="color:var(--text);margin:0 0 6px;">Competitive Advantage</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0;">Healthier ingredients, affordable pricing, and local sustainable sourcing differentiate Pizzarap from traditional fast-food competitors.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: PRODUCTION -->
+      <div id="production" class="tab-content">
+        <div class="rounded-2xl p-7 mb-6" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>
+            </div>
+            <h2 class="text-xl font-semibold" style="color:var(--text);margin:0;">Production Process</h2>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+            <div class="process-step active text-center" onclick="setProcessStep(0)" style="flex:1;min-width:120px;">
+              <div class="step-num" style="width:44px;height:44px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 8px;transition:all .3s ease;">1</div>
+              <p class="step-label" style="font-size:13px;font-weight:600;color:var(--accent);margin:0;">Prepare Bread</p>
+            </div>
+            <div style="color:var(--border);font-size:20px;">→</div>
+            <div class="process-step text-center" onclick="setProcessStep(1)" style="flex:1;min-width:120px;">
+              <div class="step-num" style="width:44px;height:44px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 8px;transition:all .3s ease;">2</div>
+              <p class="step-label" style="font-size:13px;color:var(--muted);margin:0;">Prepare Fillings</p>
+            </div>
+            <div style="color:var(--border);font-size:20px;">→</div>
+            <div class="process-step text-center" onclick="setProcessStep(2)" style="flex:1;min-width:120px;">
+              <div class="step-num" style="width:44px;height:44px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 8px;transition:all .3s ease;">3</div>
+              <p class="step-label" style="font-size:13px;color:var(--muted);margin:0;">Roll & Coat</p>
+            </div>
+            <div style="color:var(--border);font-size:20px;">→</div>
+            <div class="process-step text-center" onclick="setProcessStep(3)" style="flex:1;min-width:120px;">
+              <div class="step-num" style="width:44px;height:44px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 8px;transition:all .3s ease;">4</div>
+              <p class="step-label" style="font-size:13px;color:var(--muted);margin:0;">Deep Fry</p>
+            </div>
+            <div style="color:var(--border);font-size:20px;">→</div>
+            <div class="process-step text-center" onclick="setProcessStep(4)" style="flex:1;min-width:120px;">
+              <div class="step-num" style="width:44px;height:44px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin:0 auto 8px;transition:all .3s ease;">5</div>
+              <p class="step-label" style="font-size:13px;color:var(--muted);margin:0;">Serve with Sauce</p>
+            </div>
+          </div>
+          <div id="processDetail" style="padding:20px;border-radius:12px;background:var(--accent-soft);border:1px solid var(--accent);">
+            <p style="font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;font-weight:600;margin:0 0 6px;">Step 1 · Prepare Bread</p>
+            <p style="color:var(--text);font-size:15px;line-height:1.7;margin:0;">Remove the edges from the tasty bread slices and flatten each slice using a rolling pin or clean bottle. This creates a flexible base that's easy to roll with fillings.</p>
+          </div>
+        </div>
+
+        <!-- Capacity Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div class="rounded-2xl p-5 role-card text-center" style="background:var(--card);border:1px solid var(--border);">
+            <p style="font-size:32px;font-weight:700;color:var(--accent);margin:0;">24</p>
+            <p style="font-size:12px;color:var(--muted);margin:4px 0 0;">rolls per loaf</p>
+          </div>
+          <div class="rounded-2xl p-5 role-card text-center" style="background:var(--card);border:1px solid var(--border);">
+            <p style="font-size:32px;font-weight:700;color:var(--accent2);margin:0;">8</p>
+            <p style="font-size:12px;color:var(--muted);margin:4px 0 0;">rolls per flavor</p>
+          </div>
+          <div class="rounded-2xl p-5 role-card text-center" style="background:var(--card);border:1px solid var(--border);">
+            <p style="font-size:32px;font-weight:700;color:var(--accent);margin:0;">240</p>
+            <p style="font-size:12px;color:var(--muted);margin:4px 0 0;">rolls in 4-5 hours</p>
+          </div>
+          <div class="rounded-2xl p-5 role-card text-center" style="background:var(--card);border:1px solid var(--border);">
+            <p style="font-size:32px;font-weight:700;color:var(--accent2);margin:0;">15m</p>
+            <p style="font-size:12px;color:var(--muted);margin:4px 0 0;">frying per batch</p>
+          </div>
+        </div>
+
+        <!-- Equipment & Production Cost Tables -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+            <h2 class="text-xl font-semibold mb-4" style="color:var(--text);margin:0;">Machinery & Equipment</h2>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead><tr style="color:var(--muted);border-bottom:1px solid var(--border);" class="text-xs uppercase tracking-wide"><th class="text-left pb-3 font-medium">Item</th><th class="text-center pb-3 font-medium">Qty</th><th class="text-right pb-3 font-medium">Cost (₱)</th></tr></thead>
+                <tbody style="color:var(--text);">
+                  <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Deep Fryer</td><td class="py-3 text-center">2</td><td class="py-3 text-right font-medium">5,000.00</td></tr>
+                  <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Knife & Scissor Set</td><td class="py-3 text-center">1 set</td><td class="py-3 text-right font-medium">500.00</td></tr>
+                  <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Tong</td><td class="py-3 text-center">2</td><td class="py-3 text-right font-medium">300.00</td></tr>
+                  <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Chopping Board</td><td class="py-3 text-center">1</td><td class="py-3 text-right font-medium">150.00</td></tr>
+                  <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Sauce Bottle</td><td class="py-3 text-center">3</td><td class="py-3 text-right font-medium">150.00</td></tr>
+                  <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Super Kalan</td><td class="py-3 text-center">1</td><td class="py-3 text-right font-medium">500.00</td></tr>
+                  <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Caldero (Pot)</td><td class="py-3 text-center">1</td><td class="py-3 text-right font-medium">260.00</td></tr>
+                  <tr class="tbl-row"><td class="py-3 font-medium">Tupperware</td><td class="py-3 text-center">—</td><td class="py-3 text-right font-medium">115.00</td></tr>
+                </tbody>
+                <tfoot><tr style="border-top:2px solid var(--accent);background:var(--accent-soft);"><td class="py-3 font-bold" colspan="2">Total</td><td class="py-3 text-right font-bold" style="color:var(--accent);">₱6,975.00</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+            <h2 class="text-xl font-semibold mb-4" style="color:var(--text);margin:0;">Plant Location & Utilities</h2>
+            <div class="space-y-4">
+              <div class="p-4 rounded-xl" style="background:var(--accent-soft);border-left:3px solid var(--accent);">
+                <p style="font-weight:600;color:var(--accent);margin:0 0 4px;">Location</p>
+                <p style="font-size:14px;color:var(--text);margin:0;">Provincial Capitol View Park, Malolos City, Bulacan. Residential zone near schools and markets, along main road.</p>
+              </div>
+              <div class="p-4 rounded-xl" style="background:var(--accent2-soft);border-left:3px solid var(--accent2);">
+                <p style="font-weight:600;color:var(--accent2);margin:0 0 4px;">Facilities</p>
+                <p style="font-size:14px;color:var(--text);margin:0;">Small home kitchen with designated areas for food prep, cooking, and packing. Clean, sanitized space with tables and storage shelves.</p>
+              </div>
+              <div class="p-4 rounded-xl" style="background:var(--accent-soft);border-left:3px solid var(--accent);">
+                <p style="font-weight:600;color:var(--accent);margin:0 0 4px;">Power & Water</p>
+                <p style="font-size:14px;color:var(--text);margin:0;">Electricity from Meralco, water from PrimeWater. Estimated monthly bill: ₱3,000–₱5,000. No generator needed as outages are rare.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Production Cost Table -->
+        <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <h2 class="text-xl font-semibold mb-4" style="color:var(--text);margin:0;">Production Cost Breakdown per Unit</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead><tr style="color:var(--muted);border-bottom:1px solid var(--border);" class="text-xs uppercase tracking-wide"><th class="text-left pb-3 font-medium">Raw Material</th><th class="text-center pb-3 font-medium">Creamy Moringa</th><th class="text-center pb-3 font-medium">Tuna Pizza</th><th class="text-center pb-3 font-medium">Chicken Pastil</th></tr></thead>
+              <tbody style="color:var(--text);">
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">All Purpose Cream</td><td class="py-3 text-center">₱12.50</td><td class="py-3 text-center">—</td><td class="py-3 text-center">—</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Andrew's Sweet Ham</td><td class="py-3 text-center">₱4.50</td><td class="py-3 text-center">—</td><td class="py-3 text-center">—</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Tuna</td><td class="py-3 text-center">—</td><td class="py-3 text-center">₱6.62</td><td class="py-3 text-center">—</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Shredded Chicken</td><td class="py-3 text-center">—</td><td class="py-3 text-center">—</td><td class="py-3 text-center">₱5.63</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Oyster Sauce</td><td class="py-3 text-center">—</td><td class="py-3 text-center">—</td><td class="py-3 text-center">₱1.00</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Knorr Seasoning</td><td class="py-3 text-center">—</td><td class="py-3 text-center">—</td><td class="py-3 text-center">₱0.94</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Tomato Sauce</td><td class="py-3 text-center">—</td><td class="py-3 text-center">₱0.63</td><td class="py-3 text-center">—</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Onion & Garlic</td><td class="py-3 text-center">—</td><td class="py-3 text-center">₱2.00</td><td class="py-3 text-center">₱4.00</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Cheese</td><td class="py-3 text-center">—</td><td class="py-3 text-center">₱0.38</td><td class="py-3 text-center">—</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Tasty Bread</td><td class="py-3 text-center">₱3.33</td><td class="py-3 text-center">₱3.33</td><td class="py-3 text-center">₱3.33</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Egg</td><td class="py-3 text-center">₱1.25</td><td class="py-3 text-center">₱1.25</td><td class="py-3 text-center">₱1.25</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Breadcrumbs</td><td class="py-3 text-center">₱0.80</td><td class="py-3 text-center">₱0.80</td><td class="py-3 text-center">₱0.80</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Dip Sauce</td><td class="py-3 text-center">₱0.34</td><td class="py-3 text-center">₱0.34</td><td class="py-3 text-center">₱3.50</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Packaging</td><td class="py-3 text-center">₱1.00</td><td class="py-3 text-center">₱1.00</td><td class="py-3 text-center">₱1.00</td></tr>
+              </tbody>
+              <tfoot>
+                <tr style="border-top:2px solid var(--border);"><td class="py-3 font-semibold">Total Raw Material Cost</td><td class="py-3 text-center font-semibold">₱24.85</td><td class="py-3 text-center font-semibold">₱16.35</td><td class="py-3 text-center font-semibold">₱21.45</td></tr>
+                <tr style="border-bottom:1px solid var(--border);"><td class="py-3 font-semibold">+ Utilities & Labor</td><td class="py-3 text-center font-semibold">₱39.35</td><td class="py-3 text-center font-semibold">₱39.35</td><td class="py-3 text-center font-semibold">₱39.35</td></tr>
+                <tr style="border-bottom:1px solid var(--border);"><td class="py-3 font-semibold">Total Production Cost</td><td class="py-3 text-center font-bold" style="color:var(--accent);">₱64.20</td><td class="py-3 text-center font-bold" style="color:var(--accent);">₱55.70</td><td class="py-3 text-center font-bold" style="color:var(--accent);">₱60.80</td></tr>
+                <tr style="background:var(--accent-soft);"><td class="py-3 font-bold">Selling Price (40% markup)</td><td class="py-3 text-center font-bold" style="color:var(--accent2);">₱89.88</td><td class="py-3 text-center font-bold" style="color:var(--accent2);">₱77.98</td><td class="py-3 text-center font-bold" style="color:var(--accent2);">₱85.12</td></tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: FINANCIAL -->
+      <div id="financial" class="tab-content">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+            <h2 class="text-xl font-semibold mb-4" style="color:var(--text);margin:0;">Start-Up Expenses</h2>
+            <table class="w-full text-sm"><tbody style="color:var(--text);">
+              <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Machinery & Equipment</td><td class="py-3 text-right font-medium">₱6,975.00</td></tr>
+              <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Raw Materials</td><td class="py-3 text-right font-medium">₱23,425.00</td></tr>
+              <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Utilities</td><td class="py-3 text-right font-medium">₱2,550.00</td></tr>
+              <tr class="tbl-row"><td class="py-3 font-medium">Salary</td><td class="py-3 text-right font-medium">₱22,000.00</td></tr>
+            </tbody><tfoot><tr style="border-top:2px solid var(--accent);"><td class="py-3 font-bold text-lg">TOTAL</td><td class="py-3 text-right font-bold text-lg" style="color:var(--accent);">₱54,950.00</td></tr></tfoot></table>
+          </div>
+          <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+            <h2 class="text-xl font-semibold mb-4" style="color:var(--text);margin:0;">Monthly Operating Expenses</h2>
+            <table class="w-full text-sm"><tbody style="color:var(--text);">
+              <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Raw Materials</td><td class="py-3 text-right font-medium">₱23,425.00</td></tr>
+              <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Utilities</td><td class="py-3 text-right font-medium">₱2,550.00</td></tr>
+              <tr class="tbl-row"><td class="py-3 font-medium">Salary</td><td class="py-3 text-right font-medium">₱22,000.00</td></tr>
+            </tbody><tfoot><tr style="border-top:2px solid var(--accent2);"><td class="py-3 font-bold text-lg">TOTAL</td><td class="py-3 text-right font-bold text-lg" style="color:var(--accent2);">₱47,975.00</td></tr></tfoot></table>
+          </div>
+        </div>
+
+        <!-- 5-Year Projection Chart -->
+        <div class="rounded-2xl p-7 mb-6" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <h2 class="text-xl font-semibold mb-2" style="color:var(--text);margin:0;">5-Year Financial Projection</h2>
+          <p style="color:var(--muted);font-size:14px;margin:0 0 16px;">Sales, Expenses, and Revenue</p>
+          <div id="financialChart" style="height:380px;width:100%"></div>
+          <script>
+          (function init(n){
+            try {
+              var el=document.getElementById('financialChart'); if(!el)return;
+              if(typeof echarts==='undefined'){if(n<40){setTimeout(function(){init(n+1)},250);return;}el.textContent='Chart library failed to load';return;}
+              var c = echarts.init(el);
+              var st=getComputedStyle(document.documentElement);
+              var accent=st.getPropertyValue('--accent').trim()||'#297a2e';
+              var accent2=st.getPropertyValue('--accent2').trim()||'#d97706';
+              var muted=st.getPropertyValue('--muted').trim()||'#64748b';
+              var card=st.getPropertyValue('--card').trim()||'#ffffff';
+              var text=st.getPropertyValue('--text').trim()||'#0f172a';
+              var border=st.getPropertyValue('--border').trim()||'rgba(15,23,42,.08)';
+              c.setOption({
+                backgroundColor:'transparent',
+                tooltip:{trigger:'axis',backgroundColor:card,borderColor:border,textStyle:{color:text},axisPointer:{type:'shadow'},formatter:function(p){var s=p[0].axisValue+'<br/>';p.forEach(function(i){s+=i.marker+i.seriesName+': <strong>₱'+i.value.toLocaleString()+'</strong><br/>';});return s;}},
+                legend:{data:['Sales','Raw Materials','Revenue'],textStyle:{color:muted},top:0},
+                grid:{left:'3%',right:'4%',bottom:'3%',top:'15%',containLabel:true},
+                xAxis:{type:'category',data:['Year 1','Year 2','Year 3','Year 4','Year 5'],axisLabel:{color:muted},axisTick:{show:false},axisLine:{lineStyle:{color:border}}},
+                yAxis:{type:'value',axisLabel:{color:muted,formatter:function(v){return '₱'+(v/1000)+'K'}},splitLine:{lineStyle:{color:border}}},
+                series:[
+                  {name:'Sales',type:'bar',data:[1214304,1214304,1214304,1214304,1214304],itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:accent},{offset:1,color:accent+'80'}]},borderRadius:[4,4,0,0]},barWidth:'22%'},
+                  {name:'Raw Materials',type:'bar',data:[281100,281100,281100,281100,281100],itemStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:accent2},{offset:1,color:accent2+'80'}]},borderRadius:[4,4,0,0]},barWidth:'22%'},
+                  {name:'Revenue',type:'line',data:[55204,55204,55204,55204,55204],itemStyle:{color:'#ba3b5b'},lineStyle:{width:3},symbol:'circle',symbolSize:8}
+                ]
+              });
+              window.addEventListener('resize',function(){c.resize()});
+            } catch(e){console.error(e)}
+          })(0);
+          </script>
+        </div>
+
+        <!-- 5-Year Summary Table -->
+        <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <h2 class="text-xl font-semibold mb-4" style="color:var(--text);margin:0;">Projected Financial Summary (5 Years)</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead><tr style="color:var(--muted);border-bottom:1px solid var(--border);" class="text-xs uppercase tracking-wide"><th class="text-left pb-3 font-medium">Particulars</th><th class="text-right pb-3 font-medium">Daily</th><th class="text-right pb-3 font-medium">Weekly</th><th class="text-right pb-3 font-medium">Monthly</th><th class="text-right pb-3 font-medium">Yearly</th><th class="text-right pb-3 font-medium">5 Years</th></tr></thead>
+              <tbody style="color:var(--text);">
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 font-medium">Sales</td><td class="py-3 text-right">₱5,059.60</td><td class="py-3 text-right">₱25,298.00</td><td class="py-3 text-right">₱101,192.00</td><td class="py-3 text-right">₱1,214,304.00</td><td class="py-3 text-right">₱6,071,520.00</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 pl-4" style="color:var(--muted);">Less: Raw Materials</td><td class="py-3 text-right">₱1,171.25</td><td class="py-3 text-right">₱5,856.25</td><td class="py-3 text-right">₱23,425.00</td><td class="py-3 text-right">₱281,100.00</td><td class="py-3 text-right">₱1,405,500.00</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 pl-4" style="color:var(--muted);">Less: Utilities</td><td class="py-3 text-right">₱128.00</td><td class="py-3 text-right">₱640.00</td><td class="py-3 text-right">₱2,560.00</td><td class="py-3 text-right">₱614,000.00</td><td class="py-3 text-right">₱3,072,000.00</td></tr>
+                <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-3 pl-4" style="color:var(--muted);">Less: Salary</td><td class="py-3 text-right">₱1,100.00</td><td class="py-3 text-right">₱5,500.00</td><td class="py-3 text-right">₱22,000.00</td><td class="py-3 text-right">₱264,000.00</td><td class="py-3 text-right">₱1,320,000.00</td></tr>
+              </tbody>
+              <tfoot><tr style="background:var(--accent-soft);border-top:2px solid var(--accent);"><td class="py-3 font-bold">NET REVENUE</td><td class="py-3 text-right font-bold" style="color:var(--accent);">₱2,660.35</td><td class="py-3 text-right font-bold" style="color:var(--accent);">₱13,301.75</td><td class="py-3 text-right font-bold" style="color:var(--accent);">₱53,207.00</td><td class="py-3 text-right font-bold" style="color:var(--accent);">₱55,204.00</td><td class="py-3 text-right font-bold" style="color:var(--accent);">₱274,020.00</td></tr></tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: SOCIO-ECONOMIC -->
+      <div id="socioeconomic" class="tab-content">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="rounded-2xl p-7 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+              </div>
+              <h3 class="font-semibold text-lg" style="color:var(--text);margin:0;">Provides Employment</h3>
+            </div>
+            <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0;">Hires production workers, delivery riders, cashiers, and marketing assistants. Benefits local farmers and poultry growers through locally sourced materials. Provides food safety training to improve employability.</p>
+          </div>
+          <div class="rounded-2xl p-7 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              </div>
+              <h3 class="font-semibold text-lg" style="color:var(--text);margin:0;">Tax Compliance</h3>
+            </div>
+            <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0;">Registered with DTI and BIR. Files monthly percentage tax and quarterly/annual income tax returns. Pays local taxes. Taxes fund public projects like roads, schools, and hospitals in Bulacan.</p>
+          </div>
+          <div class="rounded-2xl p-7 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <h3 class="font-semibold text-lg" style="color:var(--text);margin:0;">Improves Capital Base</h3>
+            </div>
+            <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0;">Injects steady income flow into Malolos. Regular purchases support multiple micro-economies. Rent and tax payments boost real estate and public funds. Salaries generate consumer spending.</p>
+          </div>
+          <div class="rounded-2xl p-7 role-card" style="background:var(--card);border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <h3 class="font-semibold text-lg" style="color:var(--text);margin:0;">People Empowerment</h3>
+            </div>
+            <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0;">Staff can advance from kitchen assistants to supervisors. Supports working students with flexible schedules. Buys from small farmers, empowering rural families. Women hired equally, promoting gender equality.</p>
+          </div>
+        </div>
+        <div class="rounded-2xl p-7" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="font-semibold text-lg" style="color:var(--text);margin:0;">Creates Healthy Competition</h3>
+          </div>
+          <p style="color:var(--muted);font-size:14px;line-height:1.75;margin:0;">Operates fairly by focusing on product quality, reasonable pricing, and ethical marketing. Introduces new Filipino-inspired flavors challenging old fast-food menus. Open to collaborating with local schools and food fairs. Sets an example of eco-friendly packaging and local sourcing, encouraging other businesses to adopt greener methods. Avoids false advertising and bad-mouthing rivals — customers appreciate honesty.</p>
+        </div>
+      </div>
+
+      <!-- TAB: CALCULATOR -->
+      <div id="calculator" class="tab-content">
+        <div class="rounded-2xl p-7 mb-6" style="background:var(--card);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="8" y1="14" x2="8" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/></svg>
+            </div>
+            <h2 class="text-xl font-semibold" style="color:var(--text);margin:0;">Profit Calculator</h2>
+          </div>
+          <p style="color:var(--muted);font-size:14px;margin:0 0 20px;">Select a flavor and enter quantity to calculate potential sales and profit</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;">Select Flavor</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+                <button class="calc-flavor active" onclick="selectCalcFlavor(1,this)" style="padding:10px 16px;border-radius:10px;border:2px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;transition:all .2s ease;">Creamy Moringa</button>
+                <button class="calc-flavor" onclick="selectCalcFlavor(2,this)" style="padding:10px 16px;border-radius:10px;border:2px solid var(--border);background:var(--bg);color:var(--muted);font-weight:500;cursor:pointer;font-family:inherit;font-size:14px;transition:all .2s ease;">Cheesy Tuna</button>
+                <button class="calc-flavor" onclick="selectCalcFlavor(3,this)" style="padding:10px 16px;border-radius:10px;border:2px solid var(--border);background:var(--bg);color:var(--muted);font-weight:500;cursor:pointer;font-family:inherit;font-size:14px;transition:all .2s ease;">Chicken Pastil</button>
+              </div>
+              
+              <label style="display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;">Quantity (rolls)</label>
+              <input type="number" class="calc-input" id="calcQty" value="20" min="1" oninput="calculateProfit()" style="margin-bottom:16px;">
+              
+              <label style="display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;">Days of Operation</label>
+              <input type="number" class="calc-input" id="calcDays" value="1" min="1" oninput="calculateProfit()">
+            </div>
+            
+            <div style="padding:24px;border-radius:16px;background:linear-gradient(135deg,var(--accent-soft),var(--accent2-soft));border:1px solid var(--accent);">
+              <p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px;">Unit Price</p>
+              <p style="font-size:28px;font-weight:700;color:var(--text);margin:0 0 16px;" id="calcUnitPrice">₱89.88</p>
+              
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="padding:12px;border-radius:10px;background:var(--card);">
+                  <p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 2px;">Total Sales</p>
+                  <p style="font-size:20px;font-weight:700;color:var(--accent);margin:0;" id="calcSales">₱1,797.60</p>
+                </div>
+                <div style="padding:12px;border-radius:10px;background:var(--card);">
+                  <p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 2px;">Total Cost</p>
+                  <p style="font-size:20px;font-weight:700;color:var(--text);margin:0;" id="calcCost">₱1,284.00</p>
+                </div>
+                <div style="padding:14px;border-radius:10px;background:var(--card);grid-column:span 2;">
+                  <p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 2px;">Net Profit</p>
+                  <p style="font-size:26px;font-weight:700;color:var(--accent2);margin:0;" id="calcProfit">₱513.60</p>
+                </div>
+              </div>
+              
+              <div style="margin-top:16px;">
+                <p style="font-size:11px;color:var(--muted);margin:0 0 6px;">Profit Margin</p>
+                <div class="progress-bar" style="height:12px;"><div class="progress-fill" id="calcMargin" style="width:28.6%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div>
+                <p style="font-size:12px;color:var(--muted);margin-top:4px;" id="calcMarginText">28.6% profit margin</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-16 pt-6" style="border-top:1px solid var(--border);">
+        <div class="flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <p class="font-semibold" style="color:var(--text);margin:0;">PIZZARAP! Franchising Corp</p>
+            <p class="text-xs mt-1" style="color:var(--muted);margin:0;">Provincial Capitol View Park, Malolos City, Bulacan</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs" style="color:var(--muted);margin:0;">Contact: 0998-412-6770 | PizzaRap@gmail.com</p>
+            <p class="text-xs mt-1" style="color:var(--muted);margin:0;">La Consolacion University Philippines · May 2025</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MEMBER MODAL -->
+    <div class="modal-overlay" id="memberModal" onclick="closeModal(event)">
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+          <div id="modalAvatar" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;box-shadow:0 4px 16px rgba(41,122,46,.3);">JF</div>
+          <div>
+            <h3 id="modalName" style="font-size:20px;font-weight:700;color:var(--text);margin:0;">Justin Francisco</h3>
+            <p id="modalRole" style="font-size:13px;color:var(--accent);font-weight:600;margin:2px 0 0;">Chief Executive Officer</p>
+          </div>
+        </div>
+        <p id="modalDesc" style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 20px;">Description here.</p>
+        <button onclick="closeMemberModal()" style="padding:10px 24px;border-radius:10px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;transition:all .2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Close</button>
+      </div>
+    </div>
+
+    <!-- BACK TO TOP BUTTON -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to Top">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+  </div>
+</div>
+
+<script>
+// ===== TAB SWITCHING =====
+function switchTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].classList.remove("active");
+  }
+  tablinks = document.getElementsByClassName("tab-btn");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].classList.remove("active");
+  }
+  document.getElementById(tabName).classList.add("active");
+  evt.currentTarget.classList.add("active");
+  setTimeout(function(){window.dispatchEvent(new Event('resize'));},150);
+  animateCounters();
+}
+
+// ===== PROPONENTS COLLAPSE/EXPAND =====
+function toggleProponents(){
+  var wrapper=document.getElementById('proponentsWrapper');
+  var btn=document.getElementById('collapseBtn');
+  wrapper.classList.toggle('collapsed');
+  btn.classList.toggle('open');
+}
+
+// ===== ACCORDION =====
+function toggleAccordion(header) {
+  var content = header.querySelector('.accordion-content');
+  var icon = header.querySelector('.accordion-icon');
+  var wasOpen = header.classList.contains('open');
+  document.querySelectorAll('.accordion-header').forEach(function(h){h.classList.remove('open');h.querySelector('.accordion-content').classList.remove('open');if(h.querySelector('.accordion-icon'))h.querySelector('.accordion-icon').style.transform='rotate(0deg)';});
+  if(!wasOpen){header.classList.add('open');content.classList.add('open');if(icon)icon.style.transform='rotate(180deg)';}
+}
+
+// ===== FLAVOR SELECTOR =====
+var flavorData = {
+  1:{cost:'₱64.20',price:'₱89.88',profit:'₱25.68',pct:71,ingredients:'Cream, Ham, Bread, Egg, Breadcrumbs, Malunggay, Garlic Dip'},
+  2:{cost:'₱55.70',price:'₱77.98',profit:'₱22.28',pct:71,ingredients:'Tuna, Tomato Sauce, Onion, Cheese, Bread, Egg, Breadcrumbs, Garlic Dip'},
+  3:{cost:'₱60.80',price:'₱85.12',profit:'₱24.32',pct:71,ingredients:'Shredded Chicken, Oyster Sauce, Knorr, Onion, Garlic, Bread, Egg, Breadcrumbs, Pastil Sauce'}
+};
+function selectFlavor(n){
+  for(var i=1;i<=3;i++){document.getElementById('flavor'+i).classList.remove('active');}
+  document.getElementById('flavor'+n).classList.add('active');
+  var d=flavorData[n];
+  document.getElementById('fdCost').textContent=d.cost;
+  document.getElementById('fdPrice').textContent=d.price;
+  document.getElementById('fdProfit').textContent=d.profit;
+  document.getElementById('fdIngredients').textContent=d.ingredients;
+  var pf=document.getElementById('fdProgress');pf.style.width='0%';
+  setTimeout(function(){pf.style.width=d.pct+'%';},50);
+}
+
+// ===== PROCESS STEPS =====
+var processSteps = [
+  {title:'Step 1 · Prepare Bread',desc:'Remove the edges from the tasty bread slices and flatten each slice using a rolling pin or clean bottle. This creates a flexible base that\'s easy to roll with fillings.'},
+  {title:'Step 2 · Prepare Fillings',desc:'Prepare each filling separately. Cheesy Moringa: mix ham, all purpose cream, and malunggay. Tuna Pizza: combine canned tuna, tomato sauce, onion, and cheese. Chicken Pastil: boil chicken breast, shred, then sauté with garlic, onions, oyster sauce, and seasoning.'},
+  {title:'Step 3 · Roll & Coat',desc:'Place filling on flattened bread, roll tightly. Dip each roll in beaten egg, then coat thoroughly with breadcrumbs. Ensure even coverage for consistent frying results.'},
+  {title:'Step 4 · Deep Fry',desc:'Heat oil in deep fryer. Carefully place breaded rolls and fry until golden brown (about 15 minutes per batch). Use tongs to turn rolls for even cooking. Drain excess oil on paper towels.'},
+  {title:'Step 5 · Serve with Sauce',desc:'Prepare dipping sauces: Garlic Mayo (lemon, mayonnaise, garlic) for Moringa and Tuna flavors; Pastil Sauce (leftover chicken cooking sauce with soy sauce) for Chicken Pastil. Serve hot and fresh!'}
+];
+function setProcessStep(n){
+  var steps=document.querySelectorAll('.process-step');
+  steps.forEach(function(s,i){
+    var num=s.querySelector('.step-num');
+    var lbl=s.querySelector('.step-label');
+    if(i<=n){num.style.background='var(--accent)';num.style.color='#fff';lbl.style.color='var(--accent)';lbl.style.fontWeight='700';s.classList.add('active');}
+    else{num.style.background='var(--border)';num.style.color='var(--muted)';lbl.style.color='var(--muted)';lbl.style.fontWeight='500';s.classList.remove('active');}
+  });
+  var d=processSteps[n];
+  document.getElementById('processDetail').innerHTML='<p style="font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;font-weight:600;margin:0 0 6px;">'+d.title+'</p><p style="color:var(--text);font-size:15px;line-height:1.7;margin:0;">'+d.desc+'</p>';
+}
+
+// ===== MEMBER MODAL =====
+function showMemberModal(name,role,desc){
+  var initials=name.split(' ').map(function(n){return n[0];}).join('').substring(0,3);
+  document.getElementById('modalAvatar').textContent=initials;
+  document.getElementById('modalName').textContent=name;
+  document.getElementById('modalRole').textContent=role;
+  document.getElementById('modalDesc').textContent=desc;
+  document.getElementById('memberModal').classList.add('open');
+}
+function closeMemberModal(){document.getElementById('memberModal').classList.remove('open');}
+function closeModal(e){if(e.target.id==='memberModal')closeMemberModal();}
+
+// ===== THEME TOGGLE =====
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  var icon=document.getElementById('themeIcon');
+  if(document.body.classList.contains('dark')){
+    icon.innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }else{
+    icon.innerHTML='<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  }
+  setTimeout(function(){window.dispatchEvent(new Event('resize'));},100);
+}
+
+// ===== BACK TO TOP =====
+window.addEventListener('scroll',function(){
+  var btn=document.getElementById('backToTop');
+  if(window.scrollY>300)btn.classList.add('visible');else btn.classList.remove('visible');
+});
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'});}
+
+// ===== ANIMATED COUNTERS =====
+function animateCounters(){
+  var counters=document.querySelectorAll('.counter');
+  counters.forEach(function(counter){
+    var target=parseFloat(counter.dataset.target);
+    var prefix=counter.dataset.prefix||'';
+    var decimals=parseInt(counter.dataset.decimals)||0;
+    var duration=1500;
+    var start=0;
+    var startTime=null;
+    function step(timestamp){
+      if(!startTime)startTime=timestamp;
+      var progress=Math.min((timestamp-startTime)/duration,1);
+      var eased=1-Math.pow(1-progress,3);
+      var current=start+(target-start)*eased;
+      counter.textContent=prefix+current.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+      if(progress<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+setTimeout(animateCounters,500);
+
+// ===== CALCULATOR =====
+var calcPrices={1:{price:89.88,cost:64.20},2:{price:77.98,cost:55.70},3:{price:85.12,cost:60.80}};
+var currentCalcFlavor=1;
+function selectCalcFlavor(n,btn){
+  currentCalcFlavor=n;
+  document.querySelectorAll('.calc-flavor').forEach(function(b){b.style.borderColor='var(--border)';b.style.background='var(--bg)';b.style.color='var(--muted)';b.style.fontWeight='500';});
+  btn.style.borderColor='var(--accent)';btn.style.background='var(--accent-soft)';btn.style.color='var(--accent)';btn.style.fontWeight='600';
+  calculateProfit();
+}
+function calculateProfit(){
+  var qty=parseInt(document.getElementById('calcQty').value)||0;
+  var days=parseInt(document.getElementById('calcDays').value)||0;
+  var p=calcPrices[currentCalcFlavor];
+  var totalQty=qty*days;
+  var sales=totalQty*p.price;
+  var cost=totalQty*p.cost;
+  var profit=sales-cost;
+  var margin=sales>0?(profit/sales)*100:0;
+  document.getElementById('calcUnitPrice').textContent='₱'+p.price.toFixed(2);
+  document.getElementById('calcSales').textContent='₱'+sales.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('calcCost').textContent='₱'+cost.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('calcProfit').textContent='₱'+profit.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('calcMargin').style.width=margin+'%';
+  document.getElementById('calcMarginText').textContent=margin.toFixed(1)+'% profit margin';
+}
+setTimeout(calculateProfit,300);
+
+// ===== ESC KEY =====
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMemberModal();});
+</script>
+</html>
